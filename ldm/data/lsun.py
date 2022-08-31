@@ -6,7 +6,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 
 
-class LSUNBase(Dataset):
+class Base(Dataset):
     def __init__(self,
                  txt_file,
                  data_root,
@@ -42,6 +42,13 @@ class LSUNBase(Dataset):
         if not image.mode == "RGB":
             image = image.convert("RGB")
 
+        caption_path = example["file_path_"].replace('images', 'captions').replace('.jpg', '.txt')
+
+        with open(caption_path, "r") as f:
+            caption = f.read().replace('\n', ' ')
+
+        example['caption'] = caption
+
         # default to score-sde preprocessing
         img = np.array(image).astype(np.uint8)
         crop = min(img.shape[0], img.shape[1])
@@ -55,38 +62,10 @@ class LSUNBase(Dataset):
 
         image = self.flip(image)
         image = np.array(image).astype(np.uint8)
-        example["image"] = (image / 127.5 - 1.0).astype(np.float32)
+        example["jpg"] = (image / 127.5 - 1.0).astype(np.float32)
         return example
 
 
-class LSUNChurchesTrain(LSUNBase):
+class CELEB(Base):
     def __init__(self, **kwargs):
-        super().__init__(txt_file="data/lsun/church_outdoor_train.txt", data_root="data/lsun/churches", **kwargs)
-
-
-class LSUNChurchesValidation(LSUNBase):
-    def __init__(self, flip_p=0., **kwargs):
-        super().__init__(txt_file="data/lsun/church_outdoor_val.txt", data_root="data/lsun/churches",
-                         flip_p=flip_p, **kwargs)
-
-
-class LSUNBedroomsTrain(LSUNBase):
-    def __init__(self, **kwargs):
-        super().__init__(txt_file="data/lsun/bedrooms_train.txt", data_root="data/lsun/bedrooms", **kwargs)
-
-
-class LSUNBedroomsValidation(LSUNBase):
-    def __init__(self, flip_p=0.0, **kwargs):
-        super().__init__(txt_file="data/lsun/bedrooms_val.txt", data_root="data/lsun/bedrooms",
-                         flip_p=flip_p, **kwargs)
-
-
-class LSUNCatsTrain(LSUNBase):
-    def __init__(self, **kwargs):
-        super().__init__(txt_file="data/lsun/cat_train.txt", data_root="data/lsun/cats", **kwargs)
-
-
-class LSUNCatsValidation(LSUNBase):
-    def __init__(self, flip_p=0., **kwargs):
-        super().__init__(txt_file="data/lsun/cat_val.txt", data_root="data/lsun/cats",
-                         flip_p=flip_p, **kwargs)
+        super().__init__(txt_file='./celeb_data/celeb_paths.txt', data_root="./celeb_data/images", **kwargs)
