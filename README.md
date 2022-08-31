@@ -37,15 +37,6 @@ pip install transformers==4.19.2 diffusers invisible-watermark
 pip install -e .
 ``` 
 
-### Text-to-Image with Stable Diffusion
-![txt2img-stable2](assets/stable-samples/txt2img/merged-0005.png)
-![txt2img-stable2](assets/stable-samples/txt2img/merged-0007.png)
-
-Stable Diffusion is a latent diffusion model conditioned on the (non-pooled) text embeddings of a CLIP ViT-L/14 text encoder.
-We provide a [reference script for sampling](#reference-sampling-script), but
-there also exists a [diffusers integration](#diffusers-integration), which we
-expect to see more active community development.
-
 #### Reference Sampling Script
 
 We provide a reference sampling script, which incorporates
