@@ -108,53 +108,6 @@ For this reason `use_ema=False` is set in the configuration, otherwise the code 
 non-EMA to EMA weights. If you want to examine the effect of EMA vs no EMA, we provide "full" checkpoints
 which contain both types of weights. For these, `use_ema=False` will load and use the non-EMA weights.
 
-
-#### Diffusers Integration
-
-A simple way to download and sample Stable Diffusion is by using the [diffusers library](https://github.com/huggingface/diffusers/tree/main#new--stable-diffusion-is-now-fully-compatible-with-diffusers):
-```py
-# make sure you're logged in with `huggingface-cli login`
-from torch import autocast
-from diffusers import StableDiffusionPipeline
-
-pipe = StableDiffusionPipeline.from_pretrained(
-	"CompVis/stable-diffusion-v1-4", 
-	use_auth_token=True
-).to("cuda")
-
-prompt = "a photo of an astronaut riding a horse on mars"
-with autocast("cuda"):
-    image = pipe(prompt)["sample"][0]  
-    
-image.save("astronaut_rides_horse.png")
-```
-
-
-### Image Modification with Stable Diffusion
-
-By using a diffusion-denoising mechanism as first proposed by [SDEdit](https://arxiv.org/abs/2108.01073), the model can be used for different 
-tasks such as text-guided image-to-image translation and upscaling. Similar to the txt2img sampling script, 
-we provide a script to perform image modification with Stable Diffusion.  
-
-The following describes an example where a rough sketch made in [Pinta](https://www.pinta-project.com/) is converted into a detailed artwork.
-```
-python scripts/img2img.py --prompt "A fantasy landscape, trending on artstation" --init-img <path-to-img.jpg> --strength 0.8
-```
-Here, strength is a value between 0.0 and 1.0, that controls the amount of noise that is added to the input image. 
-Values that approach 1.0 allow for lots of variations but will also produce images that are not semantically consistent with the input. See the following example.
-
-**Input**
-
-![sketch-in](assets/stable-samples/img2img/sketch-mountains-input.jpg)
-
-**Outputs**
-
-![out3](assets/stable-samples/img2img/mountains-3.png)
-![out2](assets/stable-samples/img2img/mountains-2.png)
-
-This procedure can, for example, also be used to upscale samples from the base model.
-
-
 ## Comments 
 
 - Our codebase for the diffusion models builds heavily on [OpenAI's ADM codebase](https://github.com/openai/guided-diffusion)
