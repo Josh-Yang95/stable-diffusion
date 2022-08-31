@@ -220,7 +220,7 @@ if __name__ == "__main__":
         # add callback which sets up log directory
         default_callbacks_cfg = {
             "setup_callback": {
-                "target": "main.SetupCallback",
+                "target": "main_utils.SetupCallback",
                 "params": {
                     "resume": opt.resume,
                     "now": now,
@@ -232,22 +232,22 @@ if __name__ == "__main__":
                 }
             },
             "image_logger": {
-                "target": "main.ImageLogger",
+                "target": "main_utils.ImageLogger",
                 "params": {
                     "batch_frequency": 750,
                     "max_images": 4,
                     "clamp": True
                 }
             },
-            "learning_rate_logger": {
-                "target": "main.LearningRateMonitor",
-                "params": {
-                    "logging_interval": "step",
-                    # "log_momentum": True
-                }
-            },
+            # "learning_rate_logger": {
+            #     "target": "main_utils.LearningRateMonitor",
+            #     "params": {
+            #         "logging_interval": "step",
+            #         # "log_momentum": True
+            #     }
+            # },
             "cuda_callback": {
-                "target": "main.CUDACallback"
+                "target": "main_utils.CUDACallback"
             },
         }
         if version.parse(pl.__version__) >= version.parse('1.4.0'):
