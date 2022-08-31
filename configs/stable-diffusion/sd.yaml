@@ -76,7 +76,7 @@ data:
     num_workers: 5
     wrap: false
     train:
-      target: ldm.data.lsun.CELEB
+      target: ldm.data.celeb.CELEB
       params:
         size: 64
 
